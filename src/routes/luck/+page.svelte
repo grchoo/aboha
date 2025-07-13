@@ -45,22 +45,6 @@
 		cracked = true;
 	};
 
-	const fallbackImageCopy = (canvas) => {
-		const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-		const link = document.createElement('a');
-		link.download = `운세_${new Date().toISOString().split('T')[0]}.png`;
-		link.href = canvas.toDataURL();
-		link.click();
-
-		if (isIOS) {
-			alert(
-				'클립보드 복사가 지원되지 않아 이미지를 다운로드했습니다.\n\n사진 앱에 저장하려면:\n1. 파일 앱 열기\n2. \'다운로드\' 폴더에서 이미지 찾기\n3. 이미지를 길게 눌러 [공유] > [이미지 저장] 선택'
-			);
-		} else {
-			alert('클립보드 복사에 실패하여 이미지를 다운로드했습니다.');
-		}
-	};
-
 	const shareFortune = async () => {
 		if (!captureAreaElement) return;
 
@@ -135,8 +119,6 @@
 							);
 						}
 					}
-				} else {
-					fallbackImageCopy(canvas);
 				}
 			} catch (captureError) {
 				console.error('이미지 캡처 실패: ', captureError);
