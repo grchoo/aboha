@@ -87,7 +87,25 @@
 					height: captureAreaElement.offsetHeight
 				};
 
-				if (shareButton) {
+				// 데스크탑에서 캡처 영역을 콘텐츠 중심으로 제한
+				const container = captureAreaElement.querySelector('.container');
+				if (container && window.innerWidth > 768) { // 데스크탑 환경
+					const containerRect = container.getBoundingClientRect();
+					const captureAreaRect = captureAreaElement.getBoundingClientRect();
+					
+					// 콘텐츠 영역의 실제 크기 계산
+					const contentWidth = container.offsetWidth;
+					const contentHeight = shareButton 
+						? shareButton.getBoundingClientRect().bottom - containerRect.top + 50
+						: container.offsetHeight;
+					
+					// 캡처 영역을 콘텐츠 중심으로 조정
+					captureOptions.width = Math.min(contentWidth + 40, captureAreaElement.offsetWidth); // 좌우 20px 여백
+					captureOptions.height = contentHeight + 100; // 상하 여백 추가
+					captureOptions.x = (captureAreaElement.offsetWidth - captureOptions.width) / 2; // 중앙 정렬
+					captureOptions.y = 0; // 상단부터 시작
+				} else if (shareButton) {
+					// 모바일에서는 기존 방식 유지하되 높이만 조정
 					const captureAreaRect = captureAreaElement.getBoundingClientRect();
 					const shareButtonRect = shareButton.getBoundingClientRect();
 					captureOptions.height = shareButtonRect.bottom - captureAreaRect.top + 50;
